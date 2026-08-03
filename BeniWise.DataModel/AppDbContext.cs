@@ -9,11 +9,21 @@ namespace BeniWise.DataModel
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
+            // DAN
+               optionsBuilder.UseSqlServer(
                "Server=OSI-PC173\\SQLEXPRESS;"
                + "Database=BeniWise;"
                + "Integrated Security=true;"
                + "TrustServerCertificate=true;");
+            // ALGY
+            //optionsBuilder.UseSqlServer(
+               //"Server=localhost\\SQLEXPRESS;"
+               //+ "Database=BeniWise;"
+              // + "Integrated Security=true;"
+              // + "TrustServerCertificate=true;");
+            // DAPHNE
+
+
         }
     }
 }
