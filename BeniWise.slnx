@@ -1,3 +1,4 @@
 <Solution>
   <Project Path="BeniWise.DataModel/BeniWise.DataModel.csproj" />
+  <Project Path="BeniWise.WebApp/BeniWise.WebApp.csproj" Id="99319cfe-a3c1-4ab6-9010-ed854321fef5" />
 </Solution>

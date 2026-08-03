@@ -16,12 +16,18 @@ namespace BeniWise.DataModel
                + "Integrated Security=true;"
                + "TrustServerCertificate=true;");
             // ALGY
-            //optionsBuilder.UseSqlServer(
-               //"Server=localhost\\SQLEXPRESS;"
-               //+ "Database=BeniWise;"
-              // + "Integrated Security=true;"
-              // + "TrustServerCertificate=true;");
+            //  optionsBuilder.UseSqlServer(
+            //  "Server=localhost\\SQLEXPRESS;"
+            //  + "Database=BeniWise;"
+            //  + "Integrated Security=true;"
+            //  + "TrustServerCertificate=true;");
             // DAPHNE
+            //   optionsBuilder.UseSqlServer(
+            //   "Server=localhost\\SQLEXPRESS;"
+            //   + "Database=BeniWise;"
+            //   + "Integrated Security=true;"
+            //   + "TrustServerCertificate=true;");
+
 
 
         }
