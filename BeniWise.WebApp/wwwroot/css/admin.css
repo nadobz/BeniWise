@@ -1,0 +1,44 @@
+﻿:root {
+    --kb-green-dark: #1b4d3e;
+    --kb-green: #2e7d4f;
+    --kb-green-light: #e8f5ec;
+}
+
+body {
+    background-color: #f4f6f5;
+}
+
+.admin-sidebar {
+    width: 240px;
+    min-height: 100vh;
+    background-color: var(--kb-green-dark);
+    color: white;
+    padding: 20px 0;
+}
+
+.sidebar-brand {
+    padding: 0 20px 20px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.admin-sidebar .nav-link {
+    color: rgba(255,255,255,0.85);
+    padding: 10px 20px;
+}
+
+    .admin-sidebar .nav-link:hover,
+    .admin-sidebar .nav-link.active {
+        background-color: var(--kb-green);
+        color: white;
+    }
+
+.admin-content {
+    padding: 30px;
+}
+
+.btn-success {
+    background-color: var(--kb-green);
+    border-color: var(--kb-green);
+}

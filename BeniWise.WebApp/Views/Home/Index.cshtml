@@ -1,8 +1,64 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using BeniWise.DataModel
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "_UserLayout";
+    var featured = (List<MenuItem>)ViewBag.FeaturedMeals;
+    var categories = (List<Category>)ViewBag.QuickCategories;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="green-banner d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h4 class="fw-bold mb-1">@ViewBag.Greeting</h4>
+        <p class="mb-0">Here's today's menu.</p>
+    </div>
+    <i class="bi bi-egg-fried fs-1 opacity-75"></i>
+</div>
+
+<form asp-controller="MenuItems" asp-action="Index" method="get" class="mb-4">
+    <div class="input-group">
+        <input type="text" name="search" class="form-control" placeholder="Search for food..." />
+        <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+    </div>
+</form>
+
+<div class="d-flex justify-content-between align-items-center mb-2">
+    <h6 class="fw-bold mb-0">Featured Meals</h6>
+    <a asp-controller="MenuItems" asp-action="Index" class="small">View All</a>
+</div>
+
+<div class="row g-3 mb-4">
+    @if (!featured.Any())
+    {
+        <p class="text-muted">No menu items yet — add some in Menu Management.</p>
+    }
+    @foreach (var item in featured)
+    {
+        var allergenText = string.IsNullOrWhiteSpace(item.Allergens) ? "None" : item.Allergens;
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <img src="@(item.ImagePath ?? "/images/placeholder.png")" class="card-img-top" style="height:140px; object-fit:cover;" />
+                <div class="card-body">
+                    <div class="fw-semibold">@item.Name</div>
+                    <div class="text-muted small">@item.Calories kcal</div>
+                    <div class="small">
+                        Allergen: @allergenText
+                        @if (allergenText != "None")
+                        {
+                            <i class="bi bi-exclamation-triangle text-warning"></i>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div class="d-flex gap-2 flex-wrap">
+    @foreach (var cat in categories)
+    {
+        <a asp-controller="MenuItems" asp-action="Index" asp-route-categoryId="@cat.Id"
+           class="btn btn-light border quick-category-btn">
+            <i class="bi bi-egg-fried text-success"></i> @cat.Name
+        </a>
+    }
 </div>

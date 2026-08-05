@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BeniWise.DataModel\BeniWise.DataModel.csproj" />
+  </ItemGroup>
+
 </Project>

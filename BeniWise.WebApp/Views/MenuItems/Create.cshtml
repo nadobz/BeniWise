@@ -1,0 +1,68 @@
+﻿@model BeniWise.WebApp.Models.MenuItemFormViewModel
+@{
+    ViewData["Title"] = "Add Menu Item";
+    Layout = "_AdminLayout";
+}
+
+<h4 class="fw-bold mb-3">Add New Menu Item</h4>
+
+<div class="card border-0 shadow-sm" style="max-width:650px;">
+    <div class="card-body">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Category</label>
+                <select asp-for="CategoryId" class="form-select">
+                    <option value="">-- Select Category --</option>
+                    @foreach (var c in (List<BeniWise.DataModel.Category>)ViewBag.Categories)
+                    {
+                        <option value="@c.Id">@c.Name</option>
+                    }
+                </select>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Price (₱)</label>
+                    <input asp-for="Price" type="number" step="0.01" class="form-control" />
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Calories (kcal)</label>
+                    <input asp-for="Calories" type="number" class="form-control" />
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea asp-for="Description" class="form-control" rows="2"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Ingredients <small class="text-muted">(comma-separated)</small></label>
+                <input asp-for="Ingredients" class="form-control" placeholder="Chicken, Soy Sauce, Garlic, Vinegar" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Allergens <small class="text-muted">(comma-separated)</small></label>
+                <input asp-for="Allergens" class="form-control" placeholder="Soy, Dairy" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Photo</label>
+                <input asp-for="ImageFile" type="file" class="form-control" accept="image/*" />
+                @if (!string.IsNullOrEmpty(Model.ExistingImagePath))
+                {
+                    <img src="@Model.ExistingImagePath" class="mt-2 rounded" width="100" />
+                }
+            </div>
+
+            <button type="submit" class="btn btn-success">Save</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
