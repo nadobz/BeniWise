@@ -12,7 +12,7 @@ namespace BeniWise.WebApp.Controllers
         private readonly AppDbContext _context;
         public HomeController(AppDbContext context) => _context = context;
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? categoryId)
         {
             var hour = DateTime.Now.Hour;
             ViewBag.Greeting = hour switch
@@ -22,11 +22,17 @@ namespace BeniWise.WebApp.Controllers
                 _ => "Good Evening!"
             };
 
-            ViewBag.FeaturedMeals = await _context.MenuItems
-                .Include(m => m.Category)
+            var mealsQuery = _context.MenuItems.Include(m => m.Category).AsQueryable();
+
+            if (categoryId.HasValue)
+                mealsQuery = mealsQuery.Where(m => m.CategoryId == categoryId);
+
+            ViewBag.FeaturedMeals = await mealsQuery
                 .OrderByDescending(m => m.Id)
-                .Take(3)
+                .Take(6)
                 .ToListAsync();
+
+            ViewBag.SelectedCategoryId = categoryId;
 
             ViewBag.QuickCategories = await _context.Categories
                 .Include(c => c.MenuItems)
@@ -37,6 +43,8 @@ namespace BeniWise.WebApp.Controllers
         }
 
         public IActionResult Privacy() => View();
+
+        public IActionResult About() => View();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

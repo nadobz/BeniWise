@@ -23,15 +23,18 @@ body {
     border-bottom: 1px solid rgba(255,255,255,0.15);
 }
 
-.admin-sidebar .nav-link {
-    color: rgba(255,255,255,0.85);
+.admin-sidebar .nav-link,
+.admin-sidebar .nav-link:visited,
+.admin-sidebar button.nav-link {
+    color: rgba(255,255,255,0.85) !important;
     padding: 10px 20px;
+    text-decoration: none;
 }
 
     .admin-sidebar .nav-link:hover,
     .admin-sidebar .nav-link.active {
-        background-color: var(--kb-green);
-        color: white;
+        background-color: var(--kb-green) !important;
+        color: white !important;
     }
 
 .admin-content {
