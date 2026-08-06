@@ -1,6 +1,7 @@
 ﻿using BeniWise.DataModel;
 using BeniWise.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
@@ -42,5 +43,18 @@ namespace BeniWise.WebApp.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [Authorize]
+        public IActionResult Dashboard()
+        {
+            return View();
+        }
+
+        [Authorize(Roles = "Student")]
+        public IActionResult StudentDashboard() => View();
+
+        [Authorize(Roles = "CafeteriaStaff")]
+        public IActionResult StaffDashboard() => View();
+
     }
 }

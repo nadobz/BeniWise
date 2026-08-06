@@ -1,9 +1,11 @@
 ﻿using BeniWise.DataModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BeniWise.WebApp.Controllers
 {
+    [Authorize(Roles = "Admin,CafeteriaStaff")]
     public class CategoriesController : Controller
     {
         private readonly AppDbContext _context;

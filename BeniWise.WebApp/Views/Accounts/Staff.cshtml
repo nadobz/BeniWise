@@ -1,0 +1,49 @@
+﻿@model IList<BeniWise.DataModel.ApplicationUser>
+@{
+    ViewData["Title"] = "Staff Accounts";
+    Layout = "_AdminLayout";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h4 class="fw-bold">Staff Accounts</h4>
+    <a asp-action="CreateStaff" class="btn btn-success"><i class="bi bi-plus-lg"></i> Add Staff Account</a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>@user.Firstname @user.Lastname</td>
+                        <td>@user.Email</td>
+                        <td>
+                            <form asp-action="RemoveStaff" asp-route-id="@user.Id" method="post" class="d-inline"
+                                  onsubmit="return confirm('Remove this staff account?');">
+                                <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (!Model.Any())
+        {
+            <p class="text-muted mb-0">No staff accounts yet.</p>
+        }
+    </div>
+</div>

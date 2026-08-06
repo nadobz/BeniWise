@@ -1,5 +1,6 @@
 ﻿using BeniWise.DataModel;
 using BeniWise.WebApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,8 +17,28 @@ namespace BeniWise.WebApp.Controllers
             _env = env;
         }
 
-        // GET: /MenuItems?categoryId=2&search=chicken
+        // GET: /MenuItems?categoryId=2&search=chicken  (Admin/Staff management table)
+        [Authorize(Roles = "Admin,CafeteriaStaff")]
         public async Task<IActionResult> Index(int? categoryId, string? search)
+        {
+            var query = _context.MenuItems.Include(m => m.Category).AsQueryable();
+
+            if (categoryId.HasValue)
+                query = query.Where(m => m.CategoryId == categoryId);
+
+            if (!string.IsNullOrWhiteSpace(search))
+                query = query.Where(m => m.Name.Contains(search));
+
+            ViewBag.Categories = await _context.Categories.ToListAsync();
+            ViewBag.SelectedCategoryId = categoryId;
+            ViewBag.Search = search;
+
+            return View(await query.ToListAsync());
+        }
+
+        // GET: /MenuItems/Browse?categoryId=2&search=chicken  (Student-facing, read-only)
+        [Authorize]
+        public async Task<IActionResult> Browse(int? categoryId, string? search)
         {
             var query = _context.MenuItems.Include(m => m.Category).AsQueryable();
 
@@ -44,6 +65,7 @@ namespace BeniWise.WebApp.Controllers
         }
 
         // GET: /MenuItems/Create
+        [Authorize(Roles = "Admin,CafeteriaStaff")]
         public async Task<IActionResult> Create()
         {
             ViewBag.Categories = await _context.Categories.ToListAsync();
@@ -51,7 +73,7 @@ namespace BeniWise.WebApp.Controllers
         }
 
         // POST: /MenuItems/Create
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Admin,CafeteriaStaff")]
         public async Task<IActionResult> Create(MenuItemFormViewModel vm)
         {
             if (!ModelState.IsValid)
@@ -79,6 +101,7 @@ namespace BeniWise.WebApp.Controllers
         }
 
         // GET: /MenuItems/Edit/5
+        [Authorize(Roles = "Admin,CafeteriaStaff")]
         public async Task<IActionResult> Edit(int id)
         {
             var item = await _context.MenuItems.FindAsync(id);
@@ -100,7 +123,7 @@ namespace BeniWise.WebApp.Controllers
         }
 
         // POST: /MenuItems/Edit/5
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Admin,CafeteriaStaff")]
         public async Task<IActionResult> Edit(int id, MenuItemFormViewModel vm)
         {
             var item = await _context.MenuItems.FindAsync(id);
@@ -128,7 +151,7 @@ namespace BeniWise.WebApp.Controllers
         }
 
         // POST: /MenuItems/Delete/5
-        [HttpPost, ValidateAntiForgeryToken]
+        [HttpPost, ValidateAntiForgeryToken, Authorize(Roles = "Admin,CafeteriaStaff")]
         public async Task<IActionResult> Delete(int id)
         {
             var item = await _context.MenuItems.FindAsync(id);
