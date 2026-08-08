@@ -1,0 +1,119 @@
+﻿@model IEnumerable<dynamic>
+
+@{
+    ViewData["Title"] = "Best-Selling Dishes";
+    Layout = "_AdminLayout";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <div>
+        <h4 class="fw-bold">
+            Best-Selling Dishes
+        </h4>
+
+        <p class="text-muted mb-0">
+            Summary of the most frequently purchased menu items.
+        </p>
+    </div>
+
+    <a asp-controller="Orders"
+           asp-action="Manage"
+           class="btn btn-outline-success">
+        Back to Orders
+    </a>
+
+</div>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="text-center p-5">
+
+        <i class="bi bi-bar-chart text-muted"
+           style="font-size: 50px;"></i>
+
+        <h5 class="fw-bold mt-3">
+            No completed sales yet
+        </h5>
+
+        <p class="text-muted">
+            Best-selling dishes will appear here after completed orders.
+        </p>
+
+    </div>
+}
+else
+{
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Menu Item</th>
+                            <th>Quantity Sold</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @{
+                            int rank = 1;
+                        }
+
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+
+                                <!-- RANK -->
+                                <td>
+                                    @if (rank == 1)
+                                    {
+                                        <strong>🥇 1</strong>
+                                    }
+                                    else if (rank == 2)
+                                    {
+                                        <strong>🥈 2</strong>
+                                    }
+                                    else if (rank == 3)
+                                    {
+                                        <strong>🥉 3</strong>
+                                    }
+                                    else
+                                    {
+                                        <strong>@rank</strong>
+                                    }
+                                </td>
+
+                                <!-- MENU ITEM -->
+                                <td>
+                                    <strong>
+                                        @item.MenuItemName
+                                    </strong>
+                                </td>
+
+                                <!-- QUANTITY -->
+                                <td>
+                                    @item.QuantitySold item(s)
+                                </td>
+
+                            </tr>
+
+                            rank++;
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+}

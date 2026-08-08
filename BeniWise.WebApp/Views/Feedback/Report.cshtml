@@ -1,0 +1,112 @@
+﻿@{
+    ViewData["Title"] = "Feedback Report";
+    Layout = "_AdminLayout";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h4 class="fw-bold">Customer Feedback Report</h4>
+        <p class="text-muted mb-0">
+            Summary of customer ratings and feedback.
+        </p>
+    </div>
+
+    <a asp-controller="Feedback"
+           asp-action="Manage"
+           class="btn btn-outline-success">
+        View Feedback
+    </a>
+</div>
+
+<!-- SUMMARY -->
+<div class="row g-3 mb-4">
+
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <p class="text-muted mb-1">
+                    Total Feedback
+                </p>
+
+                <h3 class="fw-bold mb-0">
+                    @ViewBag.TotalFeedback
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <p class="text-muted mb-1">
+                    Average Rating
+                </p>
+
+                <h3 class="fw-bold mb-0">
+                    @Convert.ToDouble(ViewBag.AverageRating).ToString("0.0") / 5
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <p class="text-muted mb-1">
+                    Overall Rating
+                </p>
+
+                <h3 class="fw-bold mb-0 text-warning">
+                    ⭐ @Convert.ToDouble(ViewBag.AverageRating).ToString("0.0")
+                </h3>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- RATING BREAKDOWN -->
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+
+        <h5 class="fw-bold mb-4">
+            Rating Breakdown
+        </h5>
+
+        <div class="mb-3">
+            <strong>★★★★★</strong>
+            <span class="ms-2">
+                @ViewBag.FiveStars feedback
+            </span>
+        </div>
+
+        <div class="mb-3">
+            <strong>★★★★☆</strong>
+            <span class="ms-2">
+                @ViewBag.FourStars feedback
+            </span>
+        </div>
+
+        <div class="mb-3">
+            <strong>★★★☆☆</strong>
+            <span class="ms-2">
+                @ViewBag.ThreeStars feedback
+            </span>
+        </div>
+
+        <div class="mb-3">
+            <strong>★★☆☆☆</strong>
+            <span class="ms-2">
+                @ViewBag.TwoStars feedback
+            </span>
+        </div>
+
+        <div>
+            <strong>★☆☆☆☆</strong>
+            <span class="ms-2">
+                @ViewBag.OneStar feedback
+            </span>
+        </div>
+
+    </div>
+</div>

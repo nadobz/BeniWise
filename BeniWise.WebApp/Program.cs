@@ -16,7 +16,6 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 // MVC controllers and views
 builder.Services.AddControllersWithViews();
 
-
 var app = builder.Build();
 
 // Seed roles so AddToRoleAsync(...) has something to assign
@@ -26,18 +25,21 @@ using (var scope = app.Services.CreateScope())
     var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
     string[] roles = { "Admin", "Student", "CafeteriaStaff" };
+
     foreach (var role in roles)
     {
         if (!await roleManager.RoleExistsAsync(role))
+        {
             await roleManager.CreateAsync(new IdentityRole(role));
+        }
     }
 
-    // Seed the one Admin account, per requirement: "Admin account will be seeded into the database"
-    // TODO: move these to appsettings/user-secrets before this goes anywhere near production.
+    // Seed the one Admin account
     const string adminEmail = "admin@beniwise.com";
     const string adminPassword = "Admin123!";
 
     var adminUser = await userManager.FindByEmailAsync(adminEmail);
+
     if (adminUser == null)
     {
         adminUser = new ApplicationUser
@@ -49,8 +51,11 @@ using (var scope = app.Services.CreateScope())
         };
 
         var createResult = await userManager.CreateAsync(adminUser, adminPassword);
+
         if (createResult.Succeeded)
+        {
             await userManager.AddToRoleAsync(adminUser, "Admin");
+        }
     }
 }
 
@@ -63,9 +68,10 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 app.UseRouting();
 
-app.UseAuthentication(); // 👈 Required for Identity
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

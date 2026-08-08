@@ -1,0 +1,261 @@
+﻿@model BeniWise.DataModel.Cart
+
+@{
+    ViewData["Title"] = "My Cart";
+    Layout = "_UserLayout";
+
+    decimal total = 0;
+}
+
+@if (Model.CartItems == null || !Model.CartItems.Any())
+{
+    <div class="text-center py-5">
+        <i class="bi bi-cart-x text-muted" style="font-size: 50px;"></i>
+
+        <h5 class="fw-bold mt-3">
+            Your cart is currently empty.
+        </h5>
+
+        <p class="text-muted">
+            Add some delicious items from the menu!
+        </p>
+
+        <a asp-controller="MenuItems"
+               asp-action="Browse"
+               class="btn btn-success">
+            Browse Menu
+        </a>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+
+            <thead>
+                <tr>
+                    <th>Menu Item</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var cartItem in Model.CartItems)
+                {
+                    var subtotal = cartItem.MenuItem.Price * cartItem.Quantity;
+                    total += subtotal;
+
+                    <tr>
+
+                        <!-- MENU ITEM -->
+                        <td>
+                            <strong>
+                                @cartItem.MenuItem.Name
+                            </strong>
+                        </td>
+
+                        <!-- PRICE -->
+                        <td>
+                            ₱@cartItem.MenuItem.Price.ToString("0.00")
+                        </td>
+
+                        <!-- QUANTITY -->
+                        <td>
+                            <form asp-controller="Cart"
+                                  asp-action="UpdateQuantity"
+                                  method="post"
+                                  class="quantity-form d-flex align-items-center gap-1">
+
+                                <input type="hidden"
+                                       name="cartItemId"
+                                       value="@cartItem.Id" />
+
+                                <!-- MINUS -->
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-secondary"
+                                        onclick="updateQuantity(this, -1)">
+                                    −
+                                </button>
+
+                                <!-- QUANTITY INPUT -->
+                                <input type="number"
+                                       name="quantity"
+                                       value="@cartItem.Quantity"
+                                       min="1"
+                                       class="form-control form-control-sm text-center"
+                                       style="width: 60px;"
+                                       onchange="submitQuantity(this)" />
+
+                                <!-- PLUS -->
+                                <button type="button"
+                                        class="btn btn-sm btn-outline-secondary"
+                                        onclick="updateQuantity(this, 1)">
+                                    +
+                                </button>
+
+                            </form>
+                        </td>
+
+                        <!-- SUBTOTAL -->
+                        <td>
+                            ₱@subtotal.ToString("0.00")
+                        </td>
+
+                        <!-- REMOVE -->
+                        <td>
+                            <form asp-controller="Cart"
+                                  asp-action="Remove"
+                                  method="post"
+                                  class="remove-cart-form">
+
+                                <input type="hidden"
+                                       name="cartItemId"
+                                       value="@cartItem.Id" />
+
+                                <button type="submit"
+                                        class="btn btn-sm btn-outline-danger">
+                                    Remove
+                                </button>
+
+                            </form>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+
+        </table>
+    </div>
+
+    <!-- TOTAL -->
+    <div class="d-flex justify-content-end mt-3">
+        <h5 class="fw-bold">
+            Total: ₱@total.ToString("0.00")
+        </h5>
+    </div>
+
+    <!-- PAYMENT NOTE -->
+    <div class="d-flex justify-content-end mt-3">
+        <div class="alert alert-light border mb-0 py-2 px-3">
+            <i class="bi bi-credit-card me-1"></i>
+
+            <strong>Payment:</strong>
+            Payment will be made at the Kitchen City counter upon pickup.
+        </div>
+    </div>
+
+    <!-- CHECKOUT -->
+    <div class="d-flex justify-content-end mt-3">
+
+        <form id="checkout-form"
+              asp-controller="Cart"
+              asp-action="Checkout"
+              method="post">
+
+            <button type="button"
+                    class="btn btn-success"
+                    onclick="confirmCheckout()">
+                Checkout
+            </button>
+
+        </form>
+
+    </div>
+}
+
+@section Scripts
+{
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+
+        // PLUS / MINUS QUANTITY
+        function updateQuantity(button, amount) {
+
+        const form = button.closest(".quantity-form");
+        const input = form.querySelector('input[name="quantity"]');
+
+        let quantity = parseInt(input.value) || 1;
+
+        quantity += amount;
+
+        if (quantity < 1) {
+        quantity = 1;
+        }
+
+        input.value = quantity;
+
+        form.submit();
+        }
+
+
+        // TYPING QUANTITY
+        function submitQuantity(input) {
+
+        let quantity = parseInt(input.value) || 1;
+
+        if (quantity < 1) {
+        quantity = 1;
+        input.value = 1;
+        }
+
+        input.closest(".quantity-form").submit();
+        }
+
+
+        // REMOVE ITEM CONFIRMATION
+        document.querySelectorAll(".remove-cart-form").forEach(function (form) {
+
+        form.addEventListener("submit", function (event) {
+
+        event.preventDefault();
+
+        Swal.fire({
+        title: "Remove this item?",
+        text: "This item will be removed from your cart.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, remove it",
+        cancelButtonText: "Cancel",
+        confirmButtonColor: "#dc3545",
+        cancelButtonColor: "#6c757d"
+        }).then((result) => {
+
+        if (result.isConfirmed) {
+        form.submit();
+        }
+
+        });
+
+        });
+
+        });
+
+
+        // CHECKOUT CONFIRMATION
+        function confirmCheckout() {
+
+        Swal.fire({
+        title: "Proceed to Checkout?",
+        text: "Your order will be placed and payment will be made at the Kitchen City counter upon pickup.",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes, place my order",
+        cancelButtonText: "Cancel",
+        confirmButtonColor: "#198754",
+        cancelButtonColor: "#6c757d"
+        }).then((result) => {
+
+        if (result.isConfirmed) {
+        document.getElementById("checkout-form").submit();
+        }
+
+        });
+        }
+
+    </script>
+}

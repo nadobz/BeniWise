@@ -15,45 +15,125 @@
 					<i class="bi bi-egg-fried"></i> BeniWise
 					<div class="small text-white-50">Admin Panel</div>
 				</div>
-				<ul class="nav flex-column mt-3">
-					<li class="nav-item">
-						<a class="nav-link" asp-controller="Home" asp-action="Index">
-							<i class="bi bi-speedometer2"></i> Dashboard
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link active" asp-controller="MenuItems" asp-action="Index">
-							<i class="bi bi-egg-fried"></i> Menu Management
-						</a>
-					</li>
-					<li class="nav-item">
-						<a class="nav-link" asp-controller="Categories" asp-action="Index">
-							<i class="bi bi-grid"></i> Categories
-						</a>
-					</li>
-					@if (User.IsInRole("Admin"))
-					{
-					<li class="nav-item">
-						<a class="nav-link" asp-controller="Accounts" asp-action="Staff">
-							<i class="bi bi-people"></i> Staff Accounts
-						</a>
-					</li>
-					}
-				</ul>
-			<div class="mt-auto">
-				<form asp-controller="Intro" asp-action="Logout" method="post">
-					<button type="submit" class="nav-link border-0 bg-transparent text-start w-100">
-						<i class="bi bi-box-arrow-right"></i> Logout
-					</button>
-				</form>
-			</div>
-			</nav>
-			<main class="admin-content flex-grow-1">
-				@RenderBody()
-			</main>
-		</div>
-		<script src="~/lib/jquery/dist/jquery.min.js"></script>
-		<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-		@await RenderSectionAsync("Scripts", required: false)
-	</body>
-</html>
+			<ul class="nav flex-column mt-3">
+
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Home" asp-action="Index">
+                        <i class="bi bi-speedometer2"></i> Dashboard
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link active" asp-controller="MenuItems" asp-action="Index">
+                        <i class="bi bi-egg-fried"></i> Menu Management
+                    </a>
+                </li>
+
+                <!-- ORDER MANAGEMENT -->
+                <li class="nav-item">
+                    <a class="nav-link" asp-controller="Orders" asp-action="Manage">
+                        <i class="bi bi-receipt"></i> Order Management
+                    </a>
+                </li>
+
+                <!-- BEST-SELLING DISHES -->
+                <li class="nav-item">
+                    <a class="nav-link"
+                           asp-controller="Orders"
+                           asp-action="BestSellers">
+                        <i class="bi bi-bar-chart"></i> Best-Selling Dishes
+                    </a>
+                </li>
+
+                <!-- CUSTOMER FEEDBACK -->
+                <li class="nav-item">
+                    <a class="nav-link"
+                           asp-controller="Feedback"
+                           asp-action="Manage">
+                        <i class="bi bi-chat-square-text"></i> Feedback
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link"
+                           asp-controller="Categories"
+                           asp-action="Index">
+                        <i class="bi bi-grid"></i> Categories
+                    </a>
+                </li>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link"
+                               asp-controller="Accounts"
+                               asp-action="Staff">
+                            <i class="bi bi-people"></i> Staff Accounts
+                        </a>
+                    </li>
+                }
+
+            </ul>
+
+            <div class="mt-auto">
+
+                <form asp-controller="Intro"
+                      asp-action="Logout"
+                      method="post"
+                      id="adminLogoutForm">
+
+                    @Html.AntiForgeryToken()
+
+                    <button type="button"
+                            class="nav-link border-0 bg-transparent text-start w-100"
+                            id="adminLogoutButton">
+
+                        <i class="bi bi-box-arrow-right"></i>
+                        Logout
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </nav>
+
+        <main class="admin-content flex-grow-1">
+            @RenderBody()
+        </main>
+
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Admin Logout Confirmation -->
+    <script>
+        document.getElementById("adminLogoutButton")?.addEventListener("click", function () {
+
+        Swal.fire({
+        title: "Are you sure?",
+        text: "You will be logged out of your account.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Logout",
+        cancelButtonText: "Cancel",
+        reverseButtons: true
+        }).then((result) => {
+
+        if (result.isConfirmed) {
+        document.getElementById("adminLogoutForm").submit();
+        }
+
+        });
+
+        });
+    </script>
+    </body>
+    </html>

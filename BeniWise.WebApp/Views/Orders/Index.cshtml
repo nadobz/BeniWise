@@ -1,0 +1,207 @@
+﻿@model List<BeniWise.DataModel.Order>
+
+@{
+    ViewData["Title"] = "My Orders";
+    Layout = "_UserLayout";
+}
+
+@if (Model == null || !Model.Any())
+{
+    <div class="card border-0 shadow-sm">
+        <div class="card-body text-center py-5">
+
+            <i class="bi bi-receipt text-muted"
+               style="font-size: 50px;"></i>
+
+            <h5 class="fw-bold mt-3">
+                No orders yet
+            </h5>
+
+            <p class="text-muted">
+                Your completed purchases will appear here.
+            </p>
+
+            <a asp-controller="MenuItems"
+                   asp-action="Browse"
+                   class="btn btn-success">
+                Browse Menu
+            </a>
+
+        </div>
+    </div>
+}
+else
+{
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+
+            <div class="table-responsive">
+                <table class="table align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Order</th>
+                            <th>Date</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var order in Model)
+                        {
+                            <tr>
+
+                                <!-- ORDER ID -->
+                                <td>
+                                    <strong>#@order.Id</strong>
+                                </td>
+
+                                <!-- ORDER DATE -->
+                                <td>
+                                    @order.OrderDate.ToString("MMM dd, yyyy")
+                                    <br />
+                                    <small class="text-muted">
+                                        @order.OrderDate.ToString("hh:mm tt")
+                                    </small>
+                                </td>
+
+                                <!-- ITEMS -->
+                                <td>
+                                    @order.OrderItems.Count item(s)
+                                </td>
+
+                                <!-- TOTAL -->
+                                <td>
+                                    <strong>
+                                        ₱@order.TotalAmount.ToString("0.00")
+                                    </strong>
+                                </td>
+
+                                <!-- STATUS -->
+                                <td>
+                                    @if (order.Status == BeniWise.DataModel.OrderStatus.Pending)
+                                    {
+                                        <span class="badge bg-warning text-dark">
+                                            Pending
+                                        </span>
+                                    }
+                                    else if (order.Status == BeniWise.DataModel.OrderStatus.Preparing)
+                                    {
+                                        <span class="badge bg-info text-dark">
+                                            Preparing
+                                        </span>
+                                    }
+                                    else if (order.Status == BeniWise.DataModel.OrderStatus.ReadyForPickup)
+                                    {
+                                        <span class="badge bg-primary">
+                                            Ready for Pickup
+                                        </span>
+                                    }
+                                    else if (order.Status == BeniWise.DataModel.OrderStatus.Completed)
+                                    {
+                                        <span class="badge bg-success">
+                                            Completed
+                                        </span>
+                                    }
+                                </td>
+
+                                <!-- ACTIONS -->
+                                <td>
+
+                                    <!-- VIEW -->
+                                    <a asp-controller="Orders"
+                                           asp-action="Confirmation"
+                                           asp-route-id="@order.Id"
+                                           class="btn btn-sm btn-outline-success">
+                                        View
+                                    </a>
+
+                                    <!-- CONFIRM PICKUP -->
+                                    @if (order.Status == BeniWise.DataModel.OrderStatus.ReadyForPickup)
+                                    {
+                                        <form asp-controller="Orders"
+                                              asp-action="ConfirmPickup"
+                                              asp-route-id="@order.Id"
+                                              method="post"
+                                              class="d-inline confirm-pickup-form">
+
+                                            @Html.AntiForgeryToken()
+
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-success">
+                                                Confirm Pickup
+                                            </button>
+
+                                        </form>
+                                    }
+
+                                    <!-- LEAVE FEEDBACK -->
+                                    @if (order.Status == BeniWise.DataModel.OrderStatus.Completed)
+                                    {
+                                        <a asp-controller="Feedback"
+                                               asp-action="Create"
+                                               asp-route-orderId="@order.Id"
+                                               class="btn btn-sm btn-outline-primary">
+                                            Leave Feedback
+                                        </a>
+                                    }
+
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.querySelectorAll(".confirm-pickup-form").forEach(function (form) {
+
+        form.addEventListener("submit", function (event) {
+
+        event.preventDefault();
+
+        Swal.fire({
+        title: "Confirm Pickup?",
+        text: "Have you picked up your order?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes, I picked it up",
+        cancelButtonText: "Not yet",
+        confirmButtonColor: "#198754"
+        }).then((result) => {
+
+        if (result.isConfirmed) {
+        form.submit();
+        }
+
+        });
+
+        });
+
+        });
+    </script>
+    @if (TempData["FeedbackSuccess"] != null)
+    {
+        <script>
+            Swal.fire({
+            title: "Thank You! 💚",
+            text: "Your feedback has been submitted successfully. We appreciate you taking the time to share your experience with us!",
+            icon: "success",
+            confirmButtonText: "You're welcome!",
+            confirmButtonColor: "#198754"
+            });
+        </script>
+    }
+}

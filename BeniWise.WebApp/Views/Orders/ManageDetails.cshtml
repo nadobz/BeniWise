@@ -1,0 +1,172 @@
+﻿@model BeniWise.DataModel.Order
+
+@{
+    ViewData["Title"] = "Order Details";
+    Layout = "_AdminLayout";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <h4 class="fw-bold">Order #@Model.Id</h4>
+        <p class="text-muted mb-0">
+            Order details and customer information
+        </p>
+    </div>
+
+    <a asp-controller="Orders"
+           asp-action="Manage"
+           class="btn btn-outline-secondary">
+        Back to Orders
+    </a>
+</div>
+
+<div class="row g-3">
+
+    <!-- CUSTOMER INFORMATION -->
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+
+                <h6 class="fw-bold mb-3">
+                    Customer Information
+                </h6>
+
+                <p class="mb-1">
+                    <strong>Name:</strong>
+                    @Model.User?.Firstname @Model.User?.Lastname
+                </p>
+
+                <p class="mb-0">
+                    <strong>Email:</strong>
+                    @Model.User?.Email
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDER INFORMATION -->
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+
+                <h6 class="fw-bold mb-3">
+                    Order Information
+                </h6>
+
+                <p class="mb-1">
+                    <strong>Date:</strong>
+                    @Model.OrderDate.ToString("MMMM dd, yyyy hh:mm tt")
+                </p>
+
+                <p class="mb-1">
+                    <strong>Status:</strong>
+
+                    @if (Model.Status == BeniWise.DataModel.OrderStatus.Pending)
+                    {
+                        <span class="badge bg-warning text-dark">
+                            Pending
+                        </span>
+                    }
+                    else if (Model.Status == BeniWise.DataModel.OrderStatus.Preparing)
+                    {
+                        <span class="badge bg-info text-dark">
+                            Preparing
+                        </span>
+                    }
+                    else if (Model.Status == BeniWise.DataModel.OrderStatus.ReadyForPickup)
+                    {
+                        <span class="badge bg-primary">
+                            Ready for Pickup
+                        </span>
+                    }
+                    else if (Model.Status == BeniWise.DataModel.OrderStatus.Completed)
+                    {
+                        <span class="badge bg-success">
+                            Completed
+                        </span>
+                    }
+                </p>
+
+                <p class="mb-0">
+                    <strong>Total:</strong>
+                    ₱@Model.TotalAmount.ToString("0.00")
+                </p>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ORDER ITEMS -->
+    <div class="col-12">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+
+                <h6 class="fw-bold mb-3">
+                    Ordered Items
+                </h6>
+
+                <div class="table-responsive">
+                    <table class="table align-middle">
+
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Subtotal</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var item in Model.OrderItems)
+                            {
+                                var subtotal = item.Price * item.Quantity;
+
+                                <tr>
+                                    <td>
+                                        @item.MenuItem?.Name
+                                    </td>
+
+                                    <td>
+                                        ₱@item.Price.ToString("0.00")
+                                    </td>
+
+                                    <td>
+                                        @item.Quantity
+                                    </td>
+
+                                    <td>
+                                        ₱@subtotal.ToString("0.00")
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td colspan="3"
+                                    class="text-end fw-bold">
+                                    Total
+                                </td>
+
+                                <td class="fw-bold">
+                                    ₱@Model.TotalAmount.ToString("0.00")
+                                </td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+
+                <div class="alert alert-light border mt-3 mb-0">
+                    <i class="bi bi-info-circle"></i>
+                    Payment will be made at the Kitchen City counter
+                    upon pickup.
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,104 @@
+﻿@model BeniWise.DataModel.Feedback
+
+@{
+    ViewData["Title"] = "Leave Feedback";
+    Layout = "_UserLayout";
+}
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+
+        <h4 class="fw-bold mb-1">
+            Leave Feedback
+        </h4>
+
+        <p class="text-muted">
+            Tell us about your Kitchen City order.
+        </p>
+
+        <form asp-controller="Feedback"
+              asp-action="Create"
+              method="post">
+
+            @Html.AntiForgeryToken()
+
+            <input type="hidden"
+                   asp-for="OrderId" />
+
+            <!-- RATING -->
+            <div class="mb-3">
+
+                <label asp-for="Rating"
+                       class="form-label fw-semibold">
+                    Rating
+                </label>
+
+                <select asp-for="Rating"
+                        class="form-select">
+
+                    <option value="">Select a rating</option>
+                    <option value="5">★★★★★ - Excellent</option>
+                    <option value="4">★★★★☆ - Very Good</option>
+                    <option value="3">★★★☆☆ - Good</option>
+                    <option value="2">★★☆☆☆ - Fair</option>
+                    <option value="1">★☆☆☆☆ - Poor</option>
+
+                </select>
+
+                <span asp-validation-for="Rating"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <!-- COMMENT -->
+            <div class="mb-3">
+
+                <label asp-for="Comment"
+                       class="form-label fw-semibold">
+                    Comment
+                </label>
+
+                <textarea asp-for="Comment"
+                          class="form-control"
+                          rows="5"
+                          maxlength="500"
+                          placeholder="Tell us about your experience..."></textarea>
+
+                <small class="text-muted">
+                    Maximum 500 characters.
+                </small>
+
+                <span asp-validation-for="Comment"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+            <!-- BUTTONS -->
+            <div class="d-flex gap-2">
+
+                <a asp-controller="Orders"
+                       asp-action="Index"
+                       class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+
+                <button type="submit"
+                        class="btn btn-success">
+                    Submit Feedback
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

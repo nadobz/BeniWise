@@ -1,0 +1,148 @@
+﻿@model List<BeniWise.DataModel.Feedback>
+
+@{
+    ViewData["Title"] = "Customer Feedback";
+    Layout = "_AdminLayout";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <div>
+        <h4 class="fw-bold">Customer Feedback</h4>
+
+        <p class="text-muted mb-0">
+            Review feedback submitted by customers.
+        </p>
+    </div>
+
+    <a asp-controller="Feedback"
+           asp-action="Report"
+           class="btn btn-success">
+        <i class="bi bi-bar-chart"></i>
+        Feedback Report
+    </a>
+
+</div>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="text-center p-5">
+
+        <i class="bi bi-chat-square-text text-muted"
+           style="font-size: 50px;"></i>
+
+        <h5 class="fw-bold mt-3">
+            No feedback yet
+        </h5>
+
+        <p class="text-muted">
+            Customer feedback will appear here once submitted.
+        </p>
+
+    </div>
+}
+else
+{
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+
+            <div class="table-responsive">
+
+                <table class="table align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>Customer</th>
+                            <th>Order</th>
+                            <th>Rating</th>
+                            <th>Comment</th>
+                            <th>Date Submitted</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var feedback in Model)
+                        {
+                            <tr>
+
+                                <!-- CUSTOMER -->
+                                <td>
+                                    <strong>
+                                        @feedback.User?.Firstname
+                                        @feedback.User?.Lastname
+                                    </strong>
+
+                                    <br />
+
+                                    <small class="text-muted">
+                                        @feedback.User?.Email
+                                    </small>
+                                </td>
+
+                                <!-- ORDER -->
+                                <td>
+                                    <strong>
+                                        #@feedback.OrderId
+                                    </strong>
+                                </td>
+
+                                <!-- RATING -->
+                                <td>
+                                    <span class="text-warning">
+                                        @for (int i = 1; i <= 5; i++)
+                                        {
+                                            if (i <= feedback.Rating)
+                                            {
+                                                <i class="bi bi-star-fill"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="bi bi-star"></i>
+                                            }
+                                        }
+                                    </span>
+
+                                    <br />
+
+                                    <small class="text-muted">
+                                        @feedback.Rating / 5
+                                    </small>
+                                </td>
+
+                                <!-- COMMENT -->
+                                <td>
+                                    @if (!string.IsNullOrWhiteSpace(feedback.Comment))
+                                    {
+                                        @feedback.Comment
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">
+                                            No comment provided
+                                        </span>
+                                    }
+                                </td>
+
+                                <!-- DATE -->
+                                <td>
+                                    @feedback.DateSubmitted.ToString("MMM dd, yyyy")
+                                    <br />
+
+                                    <small class="text-muted">
+                                        @feedback.DateSubmitted.ToString("hh:mm tt")
+                                    </small>
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+}
