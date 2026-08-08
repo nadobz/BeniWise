@@ -16,6 +16,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 // MVC controllers and views
 builder.Services.AddControllersWithViews();
 
+
 var app = builder.Build();
 
 // Seed roles so AddToRoleAsync(...) has something to assign

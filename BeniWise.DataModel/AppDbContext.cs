@@ -9,8 +9,7 @@ namespace BeniWise.DataModel
             : base(options)
         {
         }
-
-        // 👇 Add this parameterless constructor for design-time use
+       
         public AppDbContext()
         {
         }
