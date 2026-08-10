@@ -1,47 +1,389 @@
 ﻿:root {
-    --kb-green-dark: #1b4d3e;
-    --kb-green: #2e7d4f;
-    --kb-green-light: #e8f5ec;
+    --beni-mint: #45d69a;
+    --beni-mint-dark: #25b879;
+    --beni-green: #198754;
+    --beni-green-dark: #176b4b;
+    --beni-ink: #182a23;
+    --beni-muted: #7a8a84;
+    --beni-bg: #f5f8f6;
+    --beni-border: #e4eee8;
+    --beni-white: #ffffff;
+    --beni-radius: 20px;
+    --beni-shadow: 0 10px 30px rgba(29, 67, 52, 0.08);
+}
+
+/* =========================
+   PAGE
+   ========================= */
+
+html,
+body {
+    min-height: 100%;
 }
 
 body {
-    background-color: #f4f6f5;
+    margin: 0;
+    background: var(--beni-bg);
+    color: var(--beni-ink);
+    font-family: Arial, Helvetica, sans-serif;
 }
+
+/* =========================
+   ADMIN SIDEBAR
+   ========================= */
 
 .admin-sidebar {
-    width: 240px;
+    width: 245px;
+    min-width: 245px;
     min-height: 100vh;
-    background-color: var(--kb-green-dark);
+    background: linear-gradient( 180deg, #48d99d 0%, #3ed293 100% );
     color: white;
-    padding: 20px 0;
+    padding: 28px 0 18px;
+    box-shadow: 12px 0 32px rgba(48, 167, 117, 0.13);
+    display: flex;
+    flex-direction: column;
 }
 
+/* =========================
+   SIDEBAR BRAND
+   ========================= */
+
 .sidebar-brand {
-    padding: 0 20px 20px;
-    font-size: 1.3rem;
-    font-weight: bold;
-    border-bottom: 1px solid rgba(255,255,255,0.15);
+    padding: 0 20px 24px;
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: white;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+    .sidebar-brand i {
+        margin-right: 5px;
+    }
+
+    .sidebar-brand .small {
+        margin-top: 4px;
+        font-size: 0.82rem;
+    }
+
+/* =========================
+   SIDEBAR NAVIGATION
+   ========================= */
+
+.admin-sidebar .nav {
+    padding: 0 12px;
+    gap: 4px;
 }
 
 .admin-sidebar .nav-link,
 .admin-sidebar .nav-link:visited,
 .admin-sidebar button.nav-link {
-    color: rgba(255,255,255,0.85) !important;
-    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    color: rgba(255, 255, 255, 0.9) !important;
+    padding: 12px 14px;
+    border-radius: 14px;
     text-decoration: none;
+    font-size: 0.92rem;
+    font-weight: 650;
+    transition: background-color 0.18s ease, color 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
 }
 
-    .admin-sidebar .nav-link:hover,
-    .admin-sidebar .nav-link.active {
-        background-color: var(--kb-green) !important;
-        color: white !important;
+    .admin-sidebar .nav-link i {
+        font-size: 1rem;
     }
 
-.admin-content {
-    padding: 30px;
+    .admin-sidebar .nav-link:hover {
+        background: rgba(255, 255, 255, 0.18) !important;
+        color: white !important;
+        transform: translateX(2px);
+    }
+
+    .admin-sidebar .nav-link.active {
+        background: white !important;
+        color: var(--beni-mint-dark) !important;
+        box-shadow: 0 7px 18px rgba(31, 119, 81, 0.12);
+    }
+
+        .admin-sidebar .nav-link.active:hover {
+            background: white !important;
+            color: var(--beni-mint-dark) !important;
+        }
+
+/* =========================
+   LOGOUT
+   ========================= */
+
+.admin-sidebar .mt-auto {
+    padding: 0 12px;
 }
 
-.btn-success {
-    background-color: var(--kb-green);
-    border-color: var(--kb-green);
+    .admin-sidebar .mt-auto .nav-link {
+        color: rgba(255, 255, 255, 0.9) !important;
+    }
+
+        .admin-sidebar .mt-auto .nav-link:hover {
+            background: rgba(255, 255, 255, 0.18) !important;
+            color: white !important;
+        }
+
+/* =========================
+   MAIN ADMIN CONTENT
+   ========================= */
+
+.admin-content {
+    flex: 1;
+    min-width: 0;
+    min-height: 100vh;
+    padding: 30px;
+    background: var(--beni-bg);
+}
+
+    /* =========================
+   HEADINGS
+   ========================= */
+
+    .admin-content h1,
+    .admin-content h2,
+    .admin-content h3,
+    .admin-content h4,
+    .admin-content h5,
+    .admin-content h6 {
+        color: var(--beni-ink);
+        letter-spacing: -0.3px;
+    }
+
+    /* =========================
+   CARDS
+   ========================= */
+
+    .admin-content .card {
+        border: 1px solid var(--beni-border) !important;
+        border-radius: var(--beni-radius) !important;
+        background: white;
+        box-shadow: 0 9px 25px rgba(36, 65, 53, 0.06) !important;
+        overflow: hidden;
+    }
+
+    .admin-content .card-body {
+        padding: 22px;
+    }
+
+    /* =========================
+   FORMS
+   ========================= */
+
+    .admin-content .form-control,
+    .admin-content .form-select {
+        min-height: 43px;
+        border-radius: 11px;
+        border-color: var(--beni-border);
+        background: #fbfdfc;
+        box-shadow: none;
+        transition: border-color 0.18s ease, box-shadow 0.18s ease;
+    }
+
+        .admin-content .form-control:focus,
+        .admin-content .form-select:focus {
+            border-color: var(--beni-mint-dark);
+            box-shadow: 0 0 0 3px rgba(69, 214, 154, 0.15);
+        }
+
+    /* =========================
+   BUTTONS
+   ========================= */
+
+    .admin-content .btn {
+        border-radius: 11px;
+        font-weight: 650;
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+
+        .admin-content .btn:hover {
+            transform: translateY(-1px);
+        }
+
+    .admin-content .btn-success {
+        background: var(--beni-mint-dark);
+        border-color: var(--beni-mint-dark);
+        box-shadow: 0 6px 15px rgba(37, 184, 121, 0.16);
+    }
+
+        .admin-content .btn-success:hover {
+            background: #1fa86d;
+            border-color: #1fa86d;
+        }
+
+    .admin-content .btn-outline-success {
+        color: var(--beni-green);
+        border-color: var(--beni-green);
+    }
+
+        .admin-content .btn-outline-success:hover {
+            background: var(--beni-green);
+            border-color: var(--beni-green);
+        }
+
+    /* =========================
+   TABLES
+   ========================= */
+
+    .admin-content .table-responsive {
+        border-radius: 17px;
+        overflow: hidden;
+        background: white;
+    }
+
+    .admin-content .table {
+        margin-bottom: 0;
+    }
+
+        .admin-content .table thead th {
+            background: #fbfdfc;
+            color: var(--beni-ink);
+            font-size: 0.85rem;
+            font-weight: 750;
+            padding: 14px 12px;
+            border-bottom: 1px solid var(--beni-border);
+        }
+
+        .admin-content .table tbody td {
+            padding: 15px 12px;
+            border-color: #edf2ef;
+            vertical-align: middle;
+        }
+
+        .admin-content .table tbody tr {
+            transition: background-color 0.15s ease;
+        }
+
+            .admin-content .table tbody tr:hover {
+                background: #fbfdfc;
+            }
+
+    /* =========================
+   STATUS BADGES
+   ========================= */
+
+    .admin-content .badge {
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-weight: 650;
+    }
+
+    /* =========================
+   ORDER STATUS SELECT
+   ========================= */
+
+    .admin-content .form-select-sm {
+        min-height: 38px;
+        border-radius: 10px;
+        font-size: 0.86rem;
+    }
+
+    /* =========================
+   ALERTS
+   ========================= */
+
+    .admin-content .alert {
+        border-radius: 14px;
+        border-color: var(--beni-border);
+    }
+
+    /* =========================
+   MENU MANAGEMENT
+   ========================= */
+
+    .admin-content .card-img-top {
+        border-radius: 0;
+    }
+
+    .admin-content .card h5,
+    .admin-content .card h6 {
+        color: var(--beni-ink);
+    }
+
+    /* =========================
+   DASHBOARD / STAT CARDS
+   ========================= */
+
+    .admin-content .shadow-sm {
+        box-shadow: 0 8px 22px rgba(36, 65, 53, 0.06) !important;
+    }
+
+    .admin-content .rounded {
+        border-radius: 16px !important;
+    }
+
+    /* =========================
+   LINKS
+   ========================= */
+
+    .admin-content a {
+        transition: color 0.15s ease;
+    }
+
+        .admin-content a:not(.btn):hover {
+            color: var(--beni-mint-dark);
+        }
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 991px) {
+
+    .admin-sidebar {
+        width: 215px;
+        min-width: 215px;
+    }
+
+    .admin-content {
+        padding: 22px;
+    }
+}
+
+@media (max-width: 768px) {
+
+    .admin-sidebar {
+        width: 190px;
+        min-width: 190px;
+    }
+
+    .admin-content {
+        padding: 18px;
+    }
+
+    .admin-sidebar .nav-link {
+        font-size: 0.85rem;
+        padding: 11px 12px;
+    }
+}
+
+@media (max-width: 576px) {
+
+    .admin-sidebar {
+        width: 100%;
+        min-width: 0;
+        min-height: auto;
+    }
+
+        .admin-sidebar .nav {
+            flex-direction: row;
+            flex-wrap: wrap;
+        }
+
+        .admin-sidebar .nav-item {
+            flex: 1 1 45%;
+        }
+
+        .admin-sidebar .nav-link {
+            justify-content: center;
+        }
+
+    .admin-content {
+        min-height: auto;
+        padding: 15px;
+    }
 }
