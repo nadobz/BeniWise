@@ -1,42 +1,86 @@
 ﻿@model BeniWise.DataModel.MenuItem
 @{
     ViewData["Title"] = Model.Name;
-    Layout = "_AdminLayout";
+    Layout = (User.IsInRole("Admin") || User.IsInRole("CafeteriaStaff")) ? "_AdminLayout" : "_UserLayout";
     var ingredients = (Model.Ingredients ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
     var allergens = (Model.Allergens ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 }
 
-<a asp-action="Index" class="text-decoration-none">&larr; Back to Menu</a>
+<a asp-action="Index" class="detail-back-link">
+    <i class="bi bi-arrow-left"></i> Back to Menu
+</a>
 
-<div class="row mt-3">
-    <div class="col-md-5">
-        <img src="@(Model.ImagePath ?? "/images/placeholder.png")" class="img-fluid rounded shadow-sm" />
-    </div>
-    <div class="col-md-7">
-        <h3 class="fw-bold">@Model.Name</h3>
-        <p class="text-muted">@Model.Description</p>
-
-        <h6 class="fw-bold mt-3">Ingredients</h6>
-        <ul>
-            @foreach (var ing in ingredients)
-            {
-                <li>@ing</li>
-            }
-        </ul>
-
-        @if (allergens.Length > 0)
-        {
-            <div class="alert alert-warning d-inline-block">
-                <strong>⚠ Allergens</strong><br />
-                Contains: @string.Join(", ", allergens)
+<div class="detail-card">
+    <div class="row g-0">
+        <div class="col-md-5">
+            <div class="detail-media">
+                <img src="@(Model.ImagePath ?? "/images/placeholder.png")" alt="@Model.Name" />
             </div>
-        }
+        </div>
+        <div class="col-md-7">
+            <div class="detail-body">
 
-        <h6 class="fw-bold mt-3">Nutritional Information <small class="text-muted">(per serving)</small></h6>
-        <table class="table table-sm w-auto">
-            <tr><td>Calories</td><td>@Model.Calories kcal</td></tr>
-            <tr><td>Price</td><td>₱@Model.Price.ToString("0.00")</td></tr>
-            <tr><td>Category</td><td>@Model.Category?.Name</td></tr>
-        </table>
+                @if (!string.IsNullOrWhiteSpace(Model.Category?.Name))
+                {
+                    <span class="detail-category-badge">
+                        <i class="bi bi-tag-fill"></i> @Model.Category.Name
+                    </span>
+                }
+
+                <h1 class="detail-title">@Model.Name</h1>
+
+                @if (!string.IsNullOrWhiteSpace(Model.Description))
+                {
+                    <p class="detail-description">@Model.Description</p>
+                }
+
+                @if (ingredients.Length > 0)
+                {
+                    <div class="detail-section-label">
+                        <i class="bi bi-basket"></i> Ingredients
+                    </div>
+                    <ul class="ingredient-list">
+                        @foreach (var ing in ingredients)
+                        {
+                            <li>@ing</li>
+                        }
+                    </ul>
+                }
+
+                @if (allergens.Length > 0)
+                {
+                    <div class="allergen-card">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                        <div>
+                            <div class="allergen-title">Allergen Notice</div>
+                            <div class="allergen-text">Contains: @string.Join(", ", allergens)</div>
+                        </div>
+                    </div>
+                }
+
+                <div class="detail-section-label">
+                    <i class="bi bi-clipboard-data"></i> Nutritional Information
+                    <small class="text-muted fw-normal">(per serving)</small>
+                </div>
+                <div class="nutrition-grid">
+                    <div class="nutrition-card">
+                        <div class="nutrition-icon"><i class="bi bi-fire"></i></div>
+                        <div class="nutrition-label">Calories</div>
+                        <div class="nutrition-value">@Model.Calories kcal</div>
+                    </div>
+                    <div class="nutrition-card">
+                        <div class="nutrition-icon"><i class="bi bi-cash-coin"></i></div>
+                        <div class="nutrition-label">Price</div>
+                        <div class="nutrition-value">₱@Model.Price.ToString("0.00")</div>
+                    </div>
+                    <div class="nutrition-card">
+                        <div class="nutrition-icon"><i class="bi bi-grid-fill"></i></div>
+                        <div class="nutrition-label">Category</div>
+                        <div class="nutrition-value">@(Model.Category?.Name ?? "—")</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
     </div>
 </div>

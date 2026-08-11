@@ -10,6 +10,8 @@
     --beni-white: #ffffff;
     --beni-radius: 20px;
     --beni-shadow: 0 10px 30px rgba(29, 67, 52, 0.08);
+    --beni-font-heading: 'Poppins', 'Segoe UI', sans-serif;
+    --beni-font-body: 'Inter', 'Segoe UI', sans-serif;
 }
 
 /* =========================
@@ -25,7 +27,9 @@ body {
     margin: 0;
     background: var(--beni-bg);
     color: var(--beni-ink);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--beni-font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
 /* =========================
@@ -166,6 +170,7 @@ body {
 .user-content h5,
 .user-content h6 {
     color: var(--beni-ink);
+    font-family: var(--beni-font-heading);
     letter-spacing: -0.3px;
 }
 
@@ -402,6 +407,226 @@ body {
 .user-content .border,
 .user-content .shadow-sm {
     border-radius: 18px;
+}
+
+/* =========================
+   MENU ITEM DETAIL PAGE
+   ========================= */
+
+.detail-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--beni-font-body);
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--beni-muted);
+    text-decoration: none;
+    margin-bottom: 20px;
+    transition: color 0.15s ease, transform 0.15s ease;
+}
+
+    .detail-back-link:hover {
+        color: var(--beni-mint-dark);
+        transform: translateX(-2px);
+    }
+
+.detail-card {
+    background: var(--beni-white);
+    border: 1px solid var(--beni-border);
+    border-radius: 24px;
+    box-shadow: var(--beni-shadow);
+    overflow: hidden;
+}
+
+.detail-media {
+    position: relative;
+    background: linear-gradient(160deg, #eefaf4 0%, #e4f3ea 100%);
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 28px;
+}
+
+    .detail-media img {
+        width: 100%;
+        max-height: 380px;
+        object-fit: cover;
+        border-radius: 18px;
+        box-shadow: 0 14px 32px rgba(29, 67, 52, 0.14);
+    }
+
+.detail-category-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(69, 214, 154, 0.14);
+    color: var(--beni-mint-dark);
+    font-family: var(--beni-font-body);
+    font-weight: 700;
+    font-size: 0.78rem;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+}
+
+.detail-body {
+    padding: 36px 40px;
+}
+
+.detail-title {
+    font-family: var(--beni-font-heading);
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--beni-ink);
+    margin-bottom: 8px;
+}
+
+.detail-description {
+    font-family: var(--beni-font-body);
+    color: var(--beni-muted);
+    font-size: 1rem;
+    line-height: 1.65;
+    margin-bottom: 26px;
+}
+
+.detail-section-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--beni-font-heading);
+    font-weight: 650;
+    font-size: 0.98rem;
+    color: var(--beni-ink);
+    margin-bottom: 14px;
+}
+
+    .detail-section-label i {
+        color: var(--beni-mint-dark);
+        font-size: 1.05rem;
+    }
+
+.ingredient-list {
+    list-style: none;
+    margin: 0 0 30px;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 10px;
+}
+
+    .ingredient-list li {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        background: #fbfdfc;
+        border: 1px solid var(--beni-border);
+        border-radius: 12px;
+        padding: 10px 13px;
+        font-family: var(--beni-font-body);
+        font-size: 0.9rem;
+        color: var(--beni-ink);
+    }
+
+        .ingredient-list li::before {
+            content: "\f26b";
+            font-family: "bootstrap-icons";
+            color: var(--beni-mint-dark);
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
+.allergen-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #fff8e8;
+    border: 1px solid #f3e1ab;
+    border-radius: 16px;
+    padding: 16px 18px;
+    margin-bottom: 30px;
+}
+
+    .allergen-card i {
+        color: #c8901c;
+        font-size: 1.2rem;
+        margin-top: 1px;
+    }
+
+    .allergen-card .allergen-title {
+        font-family: var(--beni-font-heading);
+        font-weight: 650;
+        font-size: 0.92rem;
+        color: #7a5a10;
+        margin-bottom: 3px;
+    }
+
+    .allergen-card .allergen-text {
+        font-family: var(--beni-font-body);
+        font-size: 0.9rem;
+        color: #8a6a20;
+    }
+
+.nutrition-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 14px;
+}
+
+.nutrition-card {
+    background: #fbfdfc;
+    border: 1px solid var(--beni-border);
+    border-radius: 16px;
+    padding: 16px 18px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+    .nutrition-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 18px rgba(36, 65, 53, 0.08);
+    }
+
+    .nutrition-card .nutrition-icon {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+        background: rgba(69, 214, 154, 0.14);
+        color: var(--beni-mint-dark);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        font-size: 1rem;
+    }
+
+    .nutrition-card .nutrition-label {
+        font-family: var(--beni-font-body);
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--beni-muted);
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        margin-bottom: 4px;
+    }
+
+    .nutrition-card .nutrition-value {
+        font-family: var(--beni-font-heading);
+        font-size: 1.15rem;
+        font-weight: 700;
+        color: var(--beni-ink);
+    }
+
+@media (max-width: 768px) {
+    .detail-body {
+        padding: 26px 22px;
+    }
+
+    .detail-title {
+        font-size: 1.6rem;
+    }
 }
 
 /* =========================
