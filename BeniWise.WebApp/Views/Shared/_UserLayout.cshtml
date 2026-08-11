@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using BeniWise.DataModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -68,26 +72,58 @@
 
                 <!-- CART -->
                 <li class="nav-item">
-                    <a class="nav-link @(currentController == "Cart" ? "active" : "")"
-                           asp-controller="Cart"
-                           asp-action="Index">
 
-                        <i class="bi bi-cart3"></i>
-                        Cart
+                    @if (User.IsInRole("Admin") || User.IsInRole("CafeteriaStaff"))
+                    {
+                        <a href="#"
+                               class="nav-link"
+                               id="restrictedCartButton">
 
-                    </a>
+                            <i class="bi bi-cart3"></i>
+                            Cart
+
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="nav-link @(currentController == "Cart" ? "active" : "")"
+                               asp-controller="Cart"
+                               asp-action="Index">
+
+                            <i class="bi bi-cart3"></i>
+                            Cart
+
+                        </a>
+                    }
+
                 </li>
 
                 <!-- MY ORDERS -->
                 <li class="nav-item">
-                    <a class="nav-link @(currentController == "Orders" && currentAction == "Index" ? "active" : "")"
-                           asp-controller="Orders"
-                           asp-action="Index">
 
-                        <i class="bi bi-receipt"></i>
-                        My Orders
+                    @if (User.IsInRole("Admin") || User.IsInRole("CafeteriaStaff"))
+                    {
+                        <a href="#"
+                               class="nav-link"
+                               id="restrictedOrdersButton">
 
-                    </a>
+                            <i class="bi bi-receipt"></i>
+                            My Orders
+
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="nav-link @(currentController == "Orders" && currentAction == "Index" ? "active" : "")"
+                               asp-controller="Orders"
+                               asp-action="Index">
+
+                            <i class="bi bi-receipt"></i>
+                            My Orders
+
+                        </a>
+                    }
+
                 </li>
 
             </ul>
@@ -121,8 +157,13 @@
 
             <div class="d-flex justify-content-end align-items-center mb-3">
 
+                @{
+                    var currentUser = await UserManager.GetUserAsync(User);
+                    var displayName = currentUser?.Firstname ?? "Guest";
+                }
+
                 <span class="me-2">
-                    Hello, @(User?.Identity?.Name ?? "Guest")!
+                    Hello, @displayName!
                 </span>
 
                 <div class="avatar-circle">
@@ -165,6 +206,34 @@
 
         }
 
+        });
+
+        });
+
+        // Restricted Cart
+        document.getElementById("restrictedCartButton")?.addEventListener("click", function (event) {
+
+        event.preventDefault();
+
+        Swal.fire({
+        title: "Customer Access Only",
+        text: "The cart is only available for student/customer accounts.",
+        icon: "info",
+        confirmButtonText: "OK"
+        });
+
+        });
+
+        // Restricted My Orders
+        document.getElementById("restrictedOrdersButton")?.addEventListener("click", function (event) {
+
+        event.preventDefault();
+
+        Swal.fire({
+        title: "Customer Access Only",
+        text: "My Orders is only available for student/customer accounts.",
+        icon: "info",
+        confirmButtonText: "OK"
         });
 
         });

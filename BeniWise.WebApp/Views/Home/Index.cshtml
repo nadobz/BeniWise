@@ -17,76 +17,156 @@
 @if (User.IsInRole("Admin") || User.IsInRole("CafeteriaStaff"))
 {
     <div class="mb-4">
-        <a asp-controller="MenuItems" asp-action="Index" class="btn btn-outline-success">
+        <a asp-controller="MenuItems"
+               asp-action="Index"
+               class="btn btn-outline-success">
             <i class="bi bi-speedometer2"></i> Back to Admin Management
         </a>
     </div>
 }
 
-<form asp-controller="MenuItems" asp-action="Browse" method="get" class="mb-4">
+<form asp-controller="MenuItems"
+      asp-action="Browse"
+      method="get"
+      class="mb-4">
+
     <div class="input-group">
-        <input type="text" name="search" class="form-control" placeholder="Search for food..." />
-        <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+
+        <input type="text"
+               name="search"
+               class="form-control"
+               placeholder="Search for food..." />
+
+        <button class="btn btn-outline-success"
+                type="submit">
+
+            <i class="bi bi-search"></i>
+
+        </button>
+
     </div>
+
 </form>
 
 <div class="d-flex justify-content-between align-items-center mb-2">
-    <h6 class="fw-bold mb-0">Featured Meals</h6>
+
+    <h6 class="fw-bold mb-0">
+        Featured Meals
+    </h6>
+
     @if (User.IsInRole("Admin") || User.IsInRole("CafeteriaStaff"))
     {
-        <a asp-controller="MenuItems" asp-action="Index" class="small">View All</a>
+        <a asp-controller="MenuItems"
+               asp-action="Index"
+               class="view-all-link">
+
+            View Full Menu
+            <i class="bi bi-arrow-right"></i>
+
+        </a>
     }
     else
     {
-        <a asp-controller="MenuItems" asp-action="Browse" class="small">View All</a>
+        <a asp-controller="MenuItems"
+               asp-action="Browse"
+               class="view-all-link">
+
+            View Full Menu
+            <i class="bi bi-arrow-right"></i>
+
+        </a>
     }
+
 </div>
 
 <div class="row g-3 mb-4">
+
     @if (!featured.Any())
     {
         @if (User.IsInRole("Admin") || User.IsInRole("CafeteriaStaff"))
         {
-            <p class="text-muted">No menu items yet — add some in Menu Management.</p>
+            <p class="text-muted">
+                No menu items yet — add some in Menu Management.
+            </p>
         }
         else
         {
-            <p class="text-muted">No menu items yet — check back soon!</p>
+            <p class="text-muted">
+                No menu items yet — check back soon!
+            </p>
         }
     }
+
     @foreach (var item in featured)
     {
-        var allergenText = string.IsNullOrWhiteSpace(item.Allergens) ? "None" : item.Allergens;
+        var allergenText =
+            string.IsNullOrWhiteSpace(item.Allergens)
+            ? "None"
+            : item.Allergens;
+
         <div class="col-md-4">
+
             <div class="card border-0 shadow-sm h-100">
-                <img src="@(item.ImagePath ?? "/images/placeholder.png")" class="card-img-top" style="height:140px; object-fit:cover;" />
+
+                <img src="@(item.ImagePath ?? "/images/placeholder.png")"
+                     class="card-img-top"
+                     style="height:140px; object-fit:cover;" />
+
                 <div class="card-body">
-                    <div class="fw-semibold">@item.Name</div>
-                    <div class="text-muted small">@item.Calories kcal</div>
+
+                    <div class="fw-semibold">
+                        @item.Name
+                    </div>
+
+                    <div class="text-muted small">
+                        @item.Calories kcal
+                    </div>
+
                     <div class="small">
+
                         Allergen: @allergenText
+
                         @if (allergenText != "None")
                         {
                             <i class="bi bi-exclamation-triangle text-warning"></i>
                         }
+
                     </div>
+
                 </div>
+
             </div>
+
         </div>
     }
+
 </div>
 
 <div class="d-flex gap-2 flex-wrap">
-    <a asp-controller="Home" asp-action="Index"
-       class="btn @(ViewBag.SelectedCategoryId == null ? "btn-success" : "btn-light border") quick-category-btn">
+
+    <a asp-controller="Home"
+           asp-action="Index"
+           class="btn @(ViewBag.SelectedCategoryId == null ? "btn-success" : "btn-light border") quick-category-btn">
+
         All
+
     </a>
+
     @foreach (var cat in categories)
     {
-        var isSelected = ViewBag.SelectedCategoryId != null && (int)ViewBag.SelectedCategoryId == cat.Id;
-        <a asp-controller="Home" asp-action="Index" asp-route-categoryId="@cat.Id"
-           class="btn @(isSelected ? "btn-success" : "btn-light border") quick-category-btn">
-            <i class="bi bi-egg-fried @(isSelected ? "text-white" : "text-success")"></i> @cat.Name
+        var isSelected =
+            ViewBag.SelectedCategoryId != null &&
+            (int)ViewBag.SelectedCategoryId == cat.Id;
+
+        <a asp-controller="Home"
+               asp-action="Index"
+               asp-route-categoryId="@cat.Id"
+               class="btn @(isSelected ? "btn-success" : "btn-light border") quick-category-btn">
+
+            <i class="bi bi-egg-fried @(isSelected ? "text-white" : "text-success")"></i>
+            @cat.Name
+
         </a>
     }
+
 </div>

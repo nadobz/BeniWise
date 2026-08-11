@@ -18,6 +18,7 @@ namespace BeniWise.WebApp.Controllers
 
         // GET: /Orders
         // Customer's own orders
+        [Authorize(Roles = "Student")]
         public async Task<IActionResult> Index()
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -26,11 +27,11 @@ namespace BeniWise.WebApp.Controllers
                 return Unauthorized();
 
             var orders = await _context.Orders
-             .Include(o => o.OrderItems)
-             .ThenInclude(oi => oi.MenuItem)
-             .Where(o => o.UserId == userId)
-             .OrderByDescending(o => o.OrderDate)
-             .ToListAsync();
+                .Include(o => o.OrderItems)
+                .ThenInclude(oi => oi.MenuItem)
+                .Where(o => o.UserId == userId)
+                .OrderByDescending(o => o.OrderDate)
+                .ToListAsync();
 
             var feedbackOrderIds = await _context.Feedbacks
                 .Where(f => f.UserId == userId)
@@ -43,6 +44,7 @@ namespace BeniWise.WebApp.Controllers
         }
 
         // GET: /Orders/Confirmation/5
+        [Authorize(Roles = "Student")]
         public async Task<IActionResult> Confirmation(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -101,7 +103,6 @@ namespace BeniWise.WebApp.Controllers
             return View(order);
         }
 
-
         // POST: /Orders/UpdateStatus
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -146,6 +147,7 @@ namespace BeniWise.WebApp.Controllers
         // Customer confirms that they have picked up the order
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Student")]
         public async Task<IActionResult> ConfirmPickup(int id)
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

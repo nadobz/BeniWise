@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BeniWise.WebApp.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Student")]
     public class CartController : Controller
     {
         private readonly AppDbContext _context;

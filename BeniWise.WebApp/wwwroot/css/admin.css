@@ -613,3 +613,14 @@ body {
         padding: 15px;
     }
 }
+.menu-item-link {
+    color: #182a23 !important;
+    text-decoration: none !important;
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+    .menu-item-link:hover {
+        color: #25b879 !important;
+        text-decoration: none !important;
+    }

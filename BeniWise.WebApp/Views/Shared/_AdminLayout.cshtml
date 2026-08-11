@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using BeniWise.DataModel
+@using Microsoft.AspNetCore.Identity
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -103,7 +107,26 @@
         </nav>
 
         <main class="admin-content flex-grow-1">
+
+            @{
+                var currentUser = await UserManager.GetUserAsync(User);
+                var displayName = currentUser?.Firstname ?? "User";
+            }
+
+            <div class="d-flex justify-content-end align-items-center mb-3">
+
+                <span class="me-2">
+                    Hello, @displayName!
+                </span>
+
+                <div class="avatar-circle">
+                    <i class="bi bi-person-fill"></i>
+                </div>
+
+            </div>
+
             @RenderBody()
+
         </main>
 
     </div>

@@ -708,3 +708,25 @@ body {
         padding: 16px;
     }
 }
+.view-all-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    border: 1px solid #bfead5;
+    border-radius: 999px;
+    background: #f3fbf7;
+    color: #25b879 !important;
+    font-size: 0.85rem;
+    font-weight: 650;
+    text-decoration: none !important;
+    transition: all 0.18s ease;
+}
+
+    .view-all-link:hover {
+        background: #25b879;
+        border-color: #25b879;
+        color: #fff !important;
+        transform: translateY(-1px);
+        box-shadow: 0 5px 12px rgba(37, 184, 121, 0.16);
+    }
