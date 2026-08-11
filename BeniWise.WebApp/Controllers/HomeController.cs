@@ -36,7 +36,7 @@ namespace BeniWise.WebApp.Controllers
 
             ViewBag.QuickCategories = await _context.Categories
                 .Include(c => c.MenuItems)
-                .Take(3)
+                .OrderBy(c => c.Name)
                 .ToListAsync();
 
             return View();

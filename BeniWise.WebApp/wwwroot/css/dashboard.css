@@ -380,6 +380,16 @@ body {
     box-shadow: 0 10px 25px rgba(37, 184, 121, 0.15);
 }
 
+    .green-banner h4,
+    .green-banner p {
+        color: white;
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+    }
+
+    .green-banner i {
+        text-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+    }
+
 /* =========================
    QUICK CATEGORY BUTTONS
    ========================= */

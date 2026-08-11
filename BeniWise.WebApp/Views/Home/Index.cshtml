@@ -32,13 +32,27 @@
 
 <div class="d-flex justify-content-between align-items-center mb-2">
     <h6 class="fw-bold mb-0">Featured Meals</h6>
-    <a asp-controller="MenuItems" asp-action="Index" class="small">View All</a>
+    @if (User.IsInRole("Admin") || User.IsInRole("CafeteriaStaff"))
+    {
+        <a asp-controller="MenuItems" asp-action="Index" class="small">View All</a>
+    }
+    else
+    {
+        <a asp-controller="MenuItems" asp-action="Browse" class="small">View All</a>
+    }
 </div>
 
 <div class="row g-3 mb-4">
     @if (!featured.Any())
     {
-        <p class="text-muted">No menu items yet — add some in Menu Management.</p>
+        @if (User.IsInRole("Admin") || User.IsInRole("CafeteriaStaff"))
+        {
+            <p class="text-muted">No menu items yet — add some in Menu Management.</p>
+        }
+        else
+        {
+            <p class="text-muted">No menu items yet — check back soon!</p>
+        }
     }
     @foreach (var item in featured)
     {
